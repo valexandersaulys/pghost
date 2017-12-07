@@ -1,0 +1,119 @@
+{
+    "data": {
+        "posts": [
+            {
+                "author_id": 1,
+                "created_at": "2016-04-26 14:37:54",
+                "created_by": 1,
+                "featured": 0,
+                "id": 0,
+                "image": null,
+                "language": "en_US",
+                "markdown": "\n最近專案開發上使用了 reactjs ，並採用`redux`架構。而依照 javascript 的特性，你沒辦法假設他會將指令執行完才繼續下一道指令，所以要怎麼做到多個 Action 異步處理呢？\n\n舉個例子，當你 update 一份資料以後，希望他能隨後就 fetch 回來，以確保 state 裡面都是最新的資料，直觀的來寫會是這樣，但眼尖的你一定會發現不太對勁。\n```js\nexport const fetchData = createAction('FETCH_DATA', APIUtil.fetchData);\nexport const updateData = createAction('UPDATE_DATA', APIUtil.updateData);\n```\n```js\nthis.props.updateData(data);\nthis.props.fetchData(); // not latest result\n```\n它不會等 `updateData` 執行完才執行 `fetchData`，這樣會有順序性上的錯誤。所以我們可以在 Action 裡面動手腳，以確保`fetch`會在`update`之後。\n```js\nexport const fetchData = createAction('FETCH_DATA', APIUtil.fetchData);\nexport function updateEventData(id, data) {\n  return (dispatch) => (\n    APIUtil.updateData(data)\n      .then(() => dispatch(fetchData()));\n  );\n}\n```\n不要用內建的`createAction`，改成自己定義 Action 就能解決這個問題囉！\n\n## Go Deeper\n[http://redux.js.org/docs/advanced/AsyncActions.html](http://redux.js.org/docs/advanced/AsyncActions.html)\n",
+                "page": 0,
+                "published_at": "2016-04-26 14:37:54",
+                "published_by": 1,
+                "slug": "redux-async-action",
+                "status": "published",
+                "title": "Redux 架構下實作 Async Actions",
+                "updated_at": "2016-04-26 14:37:54",
+                "updated_by": 1
+            },
+            {
+                "author_id": 1,
+                "created_at": "2016-03-29 15:56:26",
+                "created_by": 1,
+                "featured": 0,
+                "id": 1,
+                "image": null,
+                "language": "en_US",
+                "markdown": "\n我們每天都在收信，那有沒有某些信件是你想挑出來，特別處理的？有的話可以使用 [procmail](https://en.wikipedia.org/wiki/Procmail) 這個程式來幫你。\n<!--more-->\n首先你家目錄下的 `.forward` 檔案內容必須是\n```sh\n\"|/usr/local/bin/procmail\"\n```\n確定信件會被 pipe 給 procmail 處理。\n\n那現在重點會擺在 `.procmailrc` 這個檔案，這裡只會粗淺的講一下實現「用 procmail 將信件傳遞給 script 執行」。\n\n假設我想要將從 `ken8203@love.com` 寄來的信傳至 `mail_processing.py` 做處理\n```sh\n:0Wc:\n* ^From.*ken8203@love.com\n| /usr/local/bin/python $HOME/mail_processing.py\n```\n如此一來就可以正確的執行了，更細節的 filter 寫法可以到網路上查查，挺多的！\n\nOK，那 `mail_processing.py` 的改怎麼寫，才可以接住 pipe 過來的內容\n```python\n# -*- coding: utf-8 -*-\n\nimport sys\nimport email\n\nfull_msg = sys.stdin.readlines()\nmsg = email.message_from_string(''.join(full_msg))\n\nwith open('mail.txt', 'w') as fout:\n    fout.write(msg['to'] + '\\n')\n    fout.write(msg['from'] + '\\n')\n    fout.write(''.join(full_msg))\n```\n就是這麼簡單！\n\n## Note\n如果你的 `mail.txt` 遲遲不出來（有時候會 delay 一下，讓子彈飛一會兒），你可以考慮寫進 log 看看問題在哪，修改一下 `.procmailrc`\n```sh\nVERBOSE=on\nLOGFILE=$HOME/procmail.log\n\n:0Wc:\n* ^From.*ken8203@love.com\n| /usr/local/bin/python $HOME/mail_processing.py\n```\n加入1~2行，就能自己 debug 囉！\n",
+                "page": 0,
+                "published_at": "2016-03-29 15:56:26",
+                "published_by": 1,
+                "slug": "procmail-pipe-to-python-script",
+                "status": "published",
+                "title": "Procmail 搭配 Script",
+                "updated_at": "2016-03-29 15:56:26",
+                "updated_by": 1
+            }
+        ],
+        "posts_tags": [
+            {
+                "post_id": 0,
+                "tag_id": 1
+            },
+            {
+                "post_id": 0,
+                "tag_id": 2
+            },
+            {
+                "post_id": 0,
+                "tag_id": 3
+            },
+            {
+                "post_id": 0,
+                "tag_id": 4
+            },
+            {
+                "post_id": 1,
+                "tag_id": 5
+            },
+            {
+                "post_id": 1,
+                "tag_id": 6
+            },
+            {
+                "post_id": 1,
+                "tag_id": 7
+            }
+        ],
+        "tags": [
+            {
+                "description": null,
+                "id": 1,
+                "name": "reactjs",
+                "slug": "reactjs"
+            },
+            {
+                "description": null,
+                "id": 2,
+                "name": "redux",
+                "slug": "redux"
+            },
+            {
+                "description": null,
+                "id": 3,
+                "name": "async",
+                "slug": "async"
+            },
+            {
+                "description": null,
+                "id": 4,
+                "name": "action",
+                "slug": "action"
+            },
+            {
+                "description": null,
+                "id": 5,
+                "name": "mail",
+                "slug": "mail"
+            },
+            {
+                "description": null,
+                "id": 6,
+                "name": "procmail",
+                "slug": "procmail"
+            },
+            {
+                "description": null,
+                "id": 7,
+                "name": "python",
+                "slug": "python"
+            }
+        ]
+    },
+    "meta": {
+        "version": "000"
+    }
+}
