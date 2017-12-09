@@ -1,6 +1,6 @@
 # Pghost
 
-Pghost can help you to migrate Pelican's posts and tags to Ghost. It's quite simple!
+Pghost can help you to migrate Pelican's posts and tags to Ghost. It's quite easy!
 
 ## Installation
 To install Pghost, simply use pip:
