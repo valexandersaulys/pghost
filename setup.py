@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='pghost',
-	version='0.1',
+	version='1.0',
 	description='Help you to migrate Pelican\'s posts and tags to Ghost Edit Add topics',
 	keywords='blog pelican ghost migrate json',
 	url='https://github.com/ken8203/pghost',
