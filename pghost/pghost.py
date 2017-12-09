@@ -25,10 +25,14 @@ class Post:
         return self.metadata[key]
 
     def transform(self, raw_data):
-        metadata, content = raw_data.split('---')
+        try:
+            metadata, _, content = re.split(r'(\n\-+\n)', raw_data)
+        except ValueError:
+            print('Make sure you execute at your post foler.')
+            exit(0)
         self.markdown = content
         p = re.compile(r'^(\w*)\: (.+)')
-        for data in metadata.split('\n')[:-1]:
+        for data in metadata.split('\n'):
             m = p.search(data)
             self.metadata[m.group(1).lower()] = m.group(2)
 
@@ -93,9 +97,4 @@ class Pghost:
     def export(self):
         with open('blog.json', 'w') as fout:
             json.dump(self.data_block, fout, sort_keys=True, indent=4, ensure_ascii=False)
-
-if __name__ == '__main__':
-    pg = Pghost()
-    pg.parse()
-    pg.export()
     

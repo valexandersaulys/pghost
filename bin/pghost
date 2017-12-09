@@ -1,0 +1,6 @@
+#! /usr/bin/env python
+
+from pghost import Pghost
+p = Pghost()
+p.parse()
+p.export()
