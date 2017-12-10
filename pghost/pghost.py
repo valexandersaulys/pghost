@@ -24,17 +24,20 @@ class Post:
     def get(self, key):
         return self.metadata[key]
 
+    def parse_metadata(raw_data):
+        metadata_pattern = r'^(\w*)\: (.+)$'
+        parser = re.compile(metadata_pattern)
+        for line in raw_data.split('\n'):
+            m = parser.search(line)
+            if m is not None:
+                self.metadata[m.group(1).lower()] = m.group(2)
+                last_metadata = m.group(0)
+        return last_metadata
+
+
     def transform(self, raw_data):
-        try:
-            metadata, _, content = re.split(r'(\n\-+\n)', raw_data)
-        except ValueError:
-            print('Make sure you execute at your post foler.')
-            exit(0)
-        self.markdown = content
-        p = re.compile(r'^(\w*)\: (.+)')
-        for data in metadata.split('\n'):
-            m = p.search(data)
-            self.metadata[m.group(1).lower()] = m.group(2)
+        last_metadata = parse_metadata(raw_data)
+        self.markdown = raw_data.split(last_metadata)[-1]
 
     def json(self):
         return {
@@ -66,7 +69,10 @@ class Pghost:
                 'posts': [],
                 'tags':[], 
                 'posts_tags': []
-            }
+            },
+            'users': [{
+                
+            }]
         }
     
     def parse(self):
