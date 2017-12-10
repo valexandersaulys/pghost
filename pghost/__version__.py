@@ -1,7 +1,7 @@
 __title__ = 'pghost'
 __description__ = 'Export pelican\'s posts and tags to ghost'
 __url__ =  ''
-__version__ = '0.1'
+__version__ = '1.0'
 __author__ = 'Jay Chung'
 __author_email__ = 'ken8203@gmail.com'
 __license__ = 'Apache 2.0'
